@@ -1,6 +1,7 @@
 {
   "name": "telemedicines",
   "version": "0.1.0",
+  "type": "module",
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
@@ -9,12 +10,29 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "react": "19.1.0",
-    "react-dom": "19.1.0",
-    "next": "15.4.5"
+    "@clerk/nextjs": "^6.28.0",
+    "@prisma/client": "^6.13.0",
+    "@sendgrid/mail": "^8.1.1",
+    "agora-access-token": "^2.0.4",
+    "agora-react-uikit": "^1.2.0",
+    "agora-rtc-sdk-ng": "^4.24.0",
+    "chart.js": "^4.4.0",
+    "date-fns": "^3.0.6",
+    "lucide-react": "^0.294.0",
+    "next": "15.4.5",
+    "react": "^18.2.0",
+    "react-chartjs-2": "^5.2.0",
+    "react-dom": "^18.2.0",
+    "react-hot-toast": "^2.4.1",
+    "recharts": "^2.8.0",
+    "svix": "^1.71.0",
+    "uuid": "^9.0.1"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
+    "eslint": "9.33.0",
+    "eslint-config-next": "15.5.0",
+    "prisma": "^6.13.0",
     "tailwindcss": "^4"
   }
 }

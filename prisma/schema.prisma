@@ -1,0 +1,85 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model Doctor {
+  id             String         @id @default(uuid())
+  userId         String          // removed @unique here
+  specialization String
+  availability   String?
+  appointments   Appointment[]
+  user           User           @relation(fields: [userId], references: [id])
+  prescriptions  Prescription[]
+}
+
+model User {
+  id        String    @id @default(uuid())
+  clerkId   String    @unique
+  email     String    @unique
+  role      Role
+  createdAt DateTime  @default(now())
+  doctors   Doctor[]     // changed from Doctor? to Doctor[]
+  patients  Patient[]    // changed from Patient? to Patient[]
+}
+
+model Patient {
+  id               String         @id @default(uuid())
+  userId           String          // removed @unique here
+  dateOfBirth      DateTime?
+  phoneNumber      String?
+  address          String?
+  emergencyContact String?         // JSON string of emergency contact info
+  medicalHistory   String?         // JSON string of medical history
+  currentSymptoms  String?
+  insuranceInfo    String?         // JSON string of insurance information
+  preferences      String?         // JSON string of patient preferences
+  appointments     Appointment[]
+  user             User           @relation(fields: [userId], references: [id])
+  prescriptions    Prescription[]
+}
+
+model Appointment {
+  id            String            @id @default(uuid())
+  patientId     String
+  doctorId      String
+  date          DateTime
+  status        AppointmentStatus @default(PENDING)
+  createdAt     DateTime          @default(now())
+  doctor        Doctor            @relation(fields: [doctorId], references: [id])
+  patient       Patient           @relation(fields: [patientId], references: [id])
+  prescriptions Prescription[]
+}
+
+model Prescription {
+  id            String      @id @default(uuid())
+  doctorId      String
+  patientId     String
+  appointmentId String
+  diagnosis     String?
+  notes         String?
+  medications   String?     // JSON string of medications
+  pdfUrl        String?
+  createdAt     DateTime    @default(now())
+  appointment   Appointment @relation(fields: [appointmentId], references: [id])
+  doctor        Doctor      @relation(fields: [doctorId], references: [id])
+  patient       Patient     @relation(fields: [patientId], references: [id])
+}
+
+enum Role {
+  DOCTOR
+  PATIENT
+  ADMIN
+}
+
+enum AppointmentStatus {
+  PENDING
+  CONFIRMED
+  COMPLETED
+  CANCELLED
+}
